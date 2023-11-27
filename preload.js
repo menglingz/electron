@@ -11,7 +11,10 @@ contextBridge.exposeInMainWorld('versions', {
   chrome: () => process.versions.chrome,
   electron: () => process.versions.electron,
   ping: () => ipcRenderer.invoke('ping'),
-  setTitle: (title) => ipcRenderer.send('set-title', title)
+  setTitle: (title) => ipcRenderer.send('set-title', title), // 单向通信
+  openFile: () => ipcRenderer.invoke('dialog:openFile'), // 双向通信 创建一个通道
+  sendSync: ipcRenderer.sendSync('synchronous-message', 'ping'),
+  handlerCounter: (cb) => ipcRenderer.on('update-counter', cb)
   // 除函数之外，我们也可以暴露变量
 
 })
